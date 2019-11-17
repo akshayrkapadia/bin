@@ -1,0 +1,17 @@
+option=`sort -k 1 ~/Documents/.todo.txt | rofi -dmenu -theme "~/.config/rofi/config.rasi" -i -p "TODO" -font "Hack 18"`
+if [ "$option" != "" ]
+then
+	selection=`cat ~/Documents/.todo.txt | grep "$option"`
+	if [ "$selection" !=  "" ]
+	then
+		sed -i /"$selection"/d ~/Documents/.todo.txt
+        ./bin/todo
+	elif [ "$option" = "EDIT" ]
+	then
+		xdg-open ~/Documents/.todo.txt
+	else
+		echo "$option" >> ~/Documents/.todo.txt
+        ./bin/todo
+	fi
+fi
+
