@@ -1,3 +1,5 @@
+#!/bin/zsh
+
 option=`sort -k 1 ~/Documents/.todo.txt | rofi -dmenu -theme "~/.config/rofi/config.rasi" -i -p "TODO" -font "Hack 18"`
 if [ "$option" != "" ]
 then
