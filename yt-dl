@@ -9,7 +9,7 @@ then
 	else
 		mkdir $2
 		cd $2
-		youtube-dl -x --embed-thumbnail --audio-format mp3 $3
+		youtube-dl -x --embed-thumbnail --audio-format mp3 -o "%(playlist_index)s-%(title)s.%(ext)s" $3
 		id3v2 * -a $1 -A $2
 	fi
 else
@@ -17,6 +17,6 @@ else
 	cd ~/Music/$1
 	mkdir $2
 	cd $2
-	youtube-dl -x --embed-thumbnail --audio-format mp3 $3
+	youtube-dl -x --embed-thumbnail --audio-format mp3 -o "%(playlist_index)s-%(title)s.%(ext)s" $3
 	id3v2 * -a $1 -A $2
 fi
