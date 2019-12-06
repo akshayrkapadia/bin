@@ -1,22 +1,67 @@
 #!/bin/zsh
 
-if [ -d ~/Music/$1 ]
+BAND=`ls ~/Music/ | rofi -rofi -dmenu -theme "~/.config/rofi/config.rasi" -i -p "BAND" -font "Hack 18"`
+
+if [ "$BAND" != "" ]
 then
-	cd ~/Music/$1
-	if [ -d ./$2 ]
+	if [ -d ~/Music/$BAND ]
 	then
-		echo "Album Already Exists"
+		cd ~/Music/$BAND
+		while [ 1 ]
+		do
+			ALBUM=`ls ~/Music/$BAND/ | rofi -rofi -dmenu -theme "~/.config/rofi/config.rasi" -i -p "ALBUM" -font "Hack 18"`
+			if [ "$ALBUM" != "" ]
+			then
+				if [ -d ./$ALBUM ]
+				then
+					continue
+				else
+					mkdir $ALBUM
+					cd $ALBUM
+					URL=`rofi -rofi -dmenu -theme "~/.config/rofi/config.rasi" -i -p "URL" -font "Hack 18"`
+					if [ "$URL" != "" ]
+					then
+						youtube-dl -x --embed-thumbnail --audio-format mp3 -o "%(playlist_index)s-%(title)s.%(ext)s" $URL
+						id3v2 * -a $BAND -A $ALBUM
+						break
+					else
+						cd ..
+						rm -R $ALBUM
+						break
+					fi
+				fi
+			else
+				break
+			fi
+		done
 	else
-		mkdir $2
-		cd $2
-		youtube-dl -x --embed-thumbnail --audio-format mp3 -o "%(playlist_index)s-%(title)s.%(ext)s" $3
-		id3v2 * -a $1 -A $2
+		mkdir ~/Music/$BAND
+		cd ~/Music/$BAND
+        	while [ 1 ]
+                do
+                  	ALBUM=`ls ~/Music/$BAND/ | rofi -rofi -dmenu -theme "~/.config/rofi/config.rasi" -i -p "ALBUM" -font "Hack 18"`
+                        if [ "$ALBUM" != "" ]
+                        then
+                        	mkdir $ALBUM
+                                cd $ALBUM
+                                URL=`rofi -rofi -dmenu -theme "~/.config/rofi/config.rasi" -i -p "URL" -font "Hack 18"`
+                                if [ "$URL" != "" ]
+                                then
+                                	youtube-dl -x --embed-thumbnail --audio-format mp3 -o "%(playlist_index)s-%(title)s.%(ext)s" $URL
+                                        id3v2 * -a $BAND -A $ALBUM
+                                        break
+				else
+                                       	cd ..
+                                        rm -R $ALBUM
+					cd ..
+					rm -R $BAND
+                                        break
+                        	fi
+                        else
+				cd ..
+				rm -R $BAND
+                            	break
+                        fi
+                done
 	fi
-else
-	mkdir ~/Music/$1
-	cd ~/Music/$1
-	mkdir $2
-	cd $2
-	youtube-dl -x --embed-thumbnail --audio-format mp3 -o "%(playlist_index)s-%(title)s.%(ext)s" $3
-	id3v2 * -a $1 -A $2
 fi
