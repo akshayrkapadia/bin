@@ -1,15 +1,24 @@
 #!/bin/zsh
 
-class=`ls -d ~/Documents/UNC/Spring\ 2020/*/ | rofi -dmenu -theme "~/.config/rofi/config.rasi" -i -p "TODO" -font "Hack 18"`
+class=`ls -d ~/Documents/UNC/Spring\ 2020/*/ | rofi -dmenu -theme "~/.config/rofi/config.rasi" -i -p "CLASS" -font "Hack 18"`
 if [ "$class" != "" ]
 then
 	cd $class
-	date="$(date +'%m-%d-%Y')"
-	note="$date.odt"
-	touch "$note"
-	className="${PWD##*/}"
-	title="$className\n$date\n"
-	echo "$title" > $note
-	soffice "$note"
+	note=`ls | sort | rofi -dmenu -theme "~/.config/rofi/config.rasi" -i -p "NOTE" -font "Hack 18"`
+	if [ "$note" != "" ]
+	then
+		if [ "$note" = "NEW" ]
+		then
+			date="$(date +'%m-%d-%Y')"
+			note="$date.odt"
+			touch "$note"
+			className="${PWD##*/}"
+			title="$className\n$date\n"
+			echo "$title" > $note
+			soffice "$note"
+		else
+			soffice "$note"
+		fi
+	fi
 fi
 
