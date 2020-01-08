@@ -11,7 +11,7 @@ then
 		if [ "$note" = "NEW" ]
 		then
 			date="$(date +'%m-%d-%Y')"
-			note="$date.odt"
+			note="$date.txt"
 			if [ -f "$note" ]
 			then
 				soffice "$note"
@@ -20,7 +20,10 @@ then
 				className="${PWD##*/}"
 				title="$className\n$date\n"
 				echo "$title" > $note
-				soffice "$note"
+				soffice --headless --convert-to ODT "$note"
+				rm "$note"
+				newNote="$date.ODT"
+				soffice "$newNote"
 			fi
 		else
 			soffice "$note"
