@@ -5,28 +5,41 @@ class=`ls -d */ | sed 's#/##'| rofi -dmenu -theme "~/.config/rofi/config.rasi" -
 if [ "$class" != "" ]
 then
 	cd $class
+	className="${PWD##*/}"
+	cd Notes/
 	note=`ls | sort | rofi -dmenu -theme "~/.config/rofi/config.rasi" -i -p "NOTE" -font "Hack 18"`
 	if [ "$note" != "" ]
 	then
-		if [ "$note" = "NEW" ]
+		if [ "$note" = "TODAY" ]
 		then
 			date="$(date +'%m-%d-%Y')"
-			note="$date.txt"
+			note="$date Lecture Notes.txt"
 			if [ -f "$note" ]
 			then
 				soffice "$note"
 			else
 				touch "$note"
-				className="${PWD##*/}"
 				title="$className\n$date\n"
-				echo "$title" > $note
+				echo "$title" > "$note"
 				soffice --headless --convert-to ODT "$note"
 				rm "$note"
-				newNote="$date.ODT"
+				newNote="$date Lecture Notes.ODT"
 				soffice "$newNote"
 			fi
 		else
-			soffice "$note"
+			if [ -f "$note" ]
+			then
+				soffice "$note"
+			else
+				date="$(date +'%m-%d-%Y')"
+				touch "$note.txt"
+				title="$className\n$date\n"
+				echo "$title" > "$note.txt"
+				soffice --headless --convert-to ODT "$note.txt"
+				rm "$note.txt"
+				newNote="$note.ODT"
+				soffice "$newNote"
+			fi
 		fi
 	fi
 fi
