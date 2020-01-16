@@ -1,0 +1,12 @@
+#!/bin/zsh
+query=$(cat ~/.config/google-chrome/Default/Bookmarks | grep "http[s]*://*" | awk '{$1=""};1' | sed s/\"//g | sed s/" "//g | rofi -dmenu -theme "~/.config/rofi/config.rasi" -i -p "GO" -font "Hack 18")
+if [ "$query" != "" ]
+then
+	if [ "$(echo "$query" | grep 'http[s]*://*.*')" != "" ]
+	then
+		xdg-open "$query"
+	else
+		q=$(sed s/" "/"+"/g <<< "$query")
+		xdg-open "https://google.com/search?q=${q}"
+	fi
+fi
