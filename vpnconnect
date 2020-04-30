@@ -1,0 +1,3 @@
+#!/bin/zsh
+
+sudo protonvpn c -f
