@@ -1,8 +1,0 @@
-#!/bin/zsh
-
-q=`cat ~/Documents/.calc_history.txt | rofi -dmenu -i -p "CALC" -font "Hack 18"`
-if [ "$option" != "" ]
-	ans = "$(python ~/bin/calc.py $q)"
-	notify-send "$q = $ans"
-	echo "$q = $ans" >> ~/Documents/.calc_history.txt
-fi

@@ -1,0 +1,3 @@
+#!/bin/zsh
+
+$(ls /usr/bin/ | dmenu -p "run:" -fn "Noto-16" -nb "#2B2C2B" -nf "#F9FAF9" -sf "#F9FAF9" -sb "#2961DA" -i)

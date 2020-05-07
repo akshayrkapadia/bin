@@ -1,0 +1,9 @@
+#!/bin/zsh
+
+file=`find ~/ | dmenu -p "file:" -fn "Noto-16" -nb "#2B2C2B" -nf "#F9FAF9" -sf "#F9FAF9" -sb "#2961DA" -i`
+if [ "$file" != "" ]
+then
+	xfce4-terminal -e "vim $file"
+fi
+
+
